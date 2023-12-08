@@ -23,11 +23,9 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 
-const pagination = ref({
-    total_pages: 0,
-    prev_cursor : [],
-    
-})
+defineEmits([''])
+const props = defineProps(['pagination'])
+
 function paginationMode(mode, value){
 
 }

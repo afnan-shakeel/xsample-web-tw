@@ -1,9 +1,9 @@
 <template>
-    <div class="min-w-screen bg-white rounded shadow-sm p-7">
-        <div class="flex justify-between border-b mb-4 ">
-            <p class="text-black font-semibold text-lg">Search Employee</p>
-            <button @click="openForm()" 
-             class="rounded-md ring-2 py-1 px-4 ring-indigo-600 bg-white text-indigo-600 text-sm hover:bg-indigo-600 hover:text-white mb-4">Add New Employee</button>
+    <div class="min-w-screen bg-white rounded p-2">
+        <div class="flex justify-between mb-4 ">
+            <!-- <p class="text-black font-semibold text-lg">Search Employee</p> -->
+            <!-- <button @click="openForm()"  -->
+             <!-- class="rounded-md ring-2 py-1 px-4 ring-indigo-600 bg-white text-indigo-600 text-sm hover:bg-indigo-600 hover:text-white mb-4">Add New Employee</button> -->
         </div>
         <div class="grid grid-cols-4 md:grid-cols-8 gap-4">
             <div class="sm:col-span-3 md:col-span-2 lg:col-span-2 xl:col-span-1">

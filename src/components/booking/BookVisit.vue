@@ -19,14 +19,15 @@ import type PatFilterBoxVue from '../patient/PatFilterBox.vue';
                     <input datepicker datepicker-autohide type="text"
                         class="block w-full rounded-md border-0  pl-10 py-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
                         placeholder="Select date">
-                </div>
+                </div> 
             </div>
         </div>
         <div class="grid grid-cols-6 mb-4">
             <div class="col-span-2">
                 <label class="block text-sm font-medium leading-6 text-gray-900">Select Patient</label>
                 <div class="mt-1">
-                    <input type="text" name="patient" id="patient" autocomplete="given-name" placeholder="click to select patient" readonly @click="setPatFilterOpen(true)"
+                    <input type="text" name="patient" id="patient" autocomplete="given-name" placeholder="click to select patient" 
+                    readonly v-model="appointmentForm.patient" @click="setPatFilterOpen(true)"
                         class="block w-full rounded-md border-0 py-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                 </div>
             </div>
@@ -42,7 +43,8 @@ import type PatFilterBoxVue from '../patient/PatFilterBox.vue';
             <div class="col-span-2">
                 <label class="block text-sm font-medium leading-6 text-gray-900">Select Employee</label>
                 <div class="mt-1">
-                    <input type="text" name="employee" id="employee" autocomplete="employee" placeholder="click to select employee" readonly @click="setPatTableOpen(true)"
+                    <input type="text" name="employee" id="employee" autocomplete="employee" placeholder="click to select employee" 
+                    readonly v-model="appointmentForm.employee" @click="setEmpFilterOpen(true)"
                         class="block w-full rounded-md border-0 py-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                 </div>
             </div>
@@ -57,7 +59,7 @@ import type PatFilterBoxVue from '../patient/PatFilterBox.vue';
     </form>
   </div>
   <TransitionRoot appear :show="isPatFilterOpen" as="template">
-    <Dialog as="div" @close="setPatFilterOpen" class="relative z-10">
+    <Dialog as="div" class="relative z-10">
       <TransitionChild
         as="template"
         enter="duration-300 ease-out"
@@ -86,24 +88,25 @@ import type PatFilterBoxVue from '../patient/PatFilterBox.vue';
             <DialogPanel
               class="w-full max-w-8xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
             >
+            <!-- <div class="flex justify-end font-bold">x</div> -->
               <DialogTitle
                 as="h3"
                 class="text-lg font-medium leading-6 text-gray-900"
               >
-                Patient filter
-              </DialogTitle>
+                Patient Search Form 
+            </DialogTitle>
               <div class="mt-2">
                 <PatFilterBox @filter-patient="handlePatientFilter($event)"></PatFilterBox>
               </div>
 
               <div class="mt-4">
-                <button
+                <!-- <button
                   type="button"
                   class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                   @click="setPatFilterOpen(false)"
                 >
                   Proceed
-                </button>
+                </button> -->
               </div>
             </DialogPanel>
           </TransitionChild>
@@ -145,10 +148,10 @@ import type PatFilterBoxVue from '../patient/PatFilterBox.vue';
                 as="h3"
                 class="text-lg font-medium leading-6 text-gray-900"
               >
-                Patient filter
+                Patient Records
               </DialogTitle>
               <div class="mt-2">
-                <PatTable @filter-patient="handlePatientFilter($event)"></PatTable>
+                <PatTable @selected-record="handleSelectedRecord($event)" :showActions="false"></PatTable>
               </div>
 
               <div class="mt-4">
@@ -157,7 +160,118 @@ import type PatFilterBoxVue from '../patient/PatFilterBox.vue';
                   class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                   @click="setPatTableOpen(false)"
                 >
+                  Discard
+                </button>
+              </div>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </div>
+    </Dialog>
+  </TransitionRoot>
+  <TransitionRoot appear :show="isEmpFilterOpen" as="template">
+    <Dialog as="div" class="relative z-10">
+      <TransitionChild
+        as="template"
+        enter="duration-300 ease-out"
+        enter-from="opacity-0"
+        enter-to="opacity-100"
+        leave="duration-200 ease-in"
+        leave-from="opacity-100"
+        leave-to="opacity-0"
+      >
+        <div class="fixed inset-0 bg-black bg-opacity-25" />
+      </TransitionChild>
+
+      <div class="fixed inset-0 overflow-y-auto">
+        <div
+          class="flex min-h-full items-center justify-center p-4 text-center"
+        >
+          <TransitionChild
+            as="template"
+            enter="duration-300 ease-out"
+            enter-from="opacity-0 scale-95"
+            enter-to="opacity-100 scale-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100 scale-100"
+            leave-to="opacity-0 scale-95"
+          >
+            <DialogPanel
+              class="w-full max-w-8xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+            >
+            <!-- <div class="flex justify-end font-bold">x</div> -->
+              <DialogTitle
+                as="h3"
+                class="text-lg font-medium leading-6 text-gray-900"
+              >
+                Employee Search Form 
+            </DialogTitle>
+              <div class="mt-2">
+                <EmpFilterBox @filter-employee="handleEmployeeFilter($event)"></EmpFilterBox>
+              </div>
+
+              <div class="mt-4">
+                <!-- <button
+                  type="button"
+                  class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                  @click="setPatFilterOpen(false)"
+                >
                   Proceed
+                </button> -->
+              </div>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </div>
+    </Dialog>
+  </TransitionRoot>
+  <TransitionRoot appear :show="isEmpTableOpen" as="template">
+    <Dialog as="div" @close="setEmpTableOpen" class="relative z-10">
+      <TransitionChild
+        as="template"
+        enter="duration-300 ease-out"
+        enter-from="opacity-0"
+        enter-to="opacity-100"
+        leave="duration-200 ease-in"
+        leave-from="opacity-100"
+        leave-to="opacity-0"
+      >
+        <div class="fixed inset-0 bg-black bg-opacity-25" />
+      </TransitionChild>
+
+      <div class="fixed inset-0 overflow-y-auto">
+        <div
+          class="flex min-h-full items-center justify-center p-4 text-center"
+        >
+          <TransitionChild
+            as="template"
+            enter="duration-300 ease-out"
+            enter-from="opacity-0 scale-95"
+            enter-to="opacity-100 scale-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100 scale-100"
+            leave-to="opacity-0 scale-95"
+          >
+            <DialogPanel
+              class="w-full max-w-8xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+            >
+              <DialogTitle
+                as="h3"
+                class="text-lg font-medium leading-6 text-gray-900"
+              >
+                Employee Records
+              </DialogTitle>
+              <div class="mt-2">
+                <EmpTable @selected-record="handleSelectedRecordEmp($event)" :showActions="false"></EmpTable>
+              </div>
+
+              <div class="mt-4">
+                <button
+                  type="button"
+                  class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                  @click="setEmpTableOpen(false)"
+                >
+                  Discard
                 </button>
               </div>
             </DialogPanel>
@@ -183,15 +297,54 @@ import PatTable from '../patient/PatTable.vue'
 import EmpFilterBox from '../employee/EmpFilterBox.vue'
 import EmpTable from '../employee/EmpTable.vue'
 
+const appointmentForm = ref({
+    employee:'',
+    patient: ''
+})
+
 const isPatFilterOpen = ref(false)
 const filterData = ref()
 function setPatFilterOpen(value: boolean) {
     isPatFilterOpen.value = value
 }
-
 const handlePatientFilter = async (data: any) => {
     console.log('filter reached parent ', data)
     filterData.value = data
+    setPatTableOpen(true)
+}
+
+const isPatTableOpen = ref(false)
+function setPatTableOpen(value: boolean) {
+    isPatTableOpen.value = value
+}
+function handleSelectedRecord(data: any){
+    console.log('handling selected record', data.name)
+    setPatFilterOpen(false)
+    setPatTableOpen(false)
+    appointmentForm.value.patient = data.name
+}
+
+
+const isEmpFilterOpen = ref(false)
+// const filterData = ref()
+function setEmpFilterOpen(value: boolean) {
+    isEmpFilterOpen.value = value
+}
+const handleEmployeeFilter = async (data: any) => {
+    console.log('filter reached parent ', data)
+    // filterData.value = data
+    setEmpTableOpen(true)
+}
+
+const isEmpTableOpen = ref(false)
+function setEmpTableOpen(value: boolean) {
+    isEmpTableOpen.value = value
+}
+function handleSelectedRecordEmp(data: any){
+    console.log('handling selected record', data.name)
+    setEmpFilterOpen(false)
+    setEmpTableOpen(false)
+    appointmentForm.value.employee = data.name
 }
 </script>
 

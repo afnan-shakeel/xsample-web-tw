@@ -1,5 +1,5 @@
 <template>
-    <div class="min-w-screen bg-white rounded shadow-sm p-7">
+    <div class="min-w-screen bg-white rounded p-2">
         <div class="flex justify-between mb-4 ">
             <!-- <p class="text-black font-semibold text-lg">Search Patient</p> -->
             <!-- <button @click="openForm()"  -->

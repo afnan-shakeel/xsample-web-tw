@@ -272,7 +272,7 @@ const menusList = ref([
         id: 6,
         title: "Diagnosis",
         isActive: false,
-        to: "/diagnosis",
+        to: "/diagnose",
     },
 ])
 

@@ -24,13 +24,13 @@
                     <th scope="col" class="px-6 py-3">
                         Status
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th v-if="showActions" scope="col" class="px-6 py-3">
                         Action
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item of empList" :key="item.id"
+                <tr v-for="item of empList" :key="item.id" @click="selectedRecord(item)"
                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{ item.emp_code }}
@@ -53,7 +53,7 @@
                     <td class="px-6 py-4">
                         {{ item.status }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td v-if="showActions" class="px-6 py-4">
                         <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                     </td>
                 </tr>
@@ -99,7 +99,8 @@ const filterEmployees = (data: any) => {
     fetchEmployees(filterData)
 }
 defineExpose({ filterEmployees })
-
+const props = defineProps(['showActions'])
+const emits = defineEmits(['selected-record'])
 onMounted(() => {
     fetchEmployees()
 })
@@ -120,6 +121,11 @@ const fetchEmployees = async (filter = null) => {
     next_cursor.value = metax.cursor.next_cursor
     // if (!prev_cursor.value.includes(metax.cursor.prev_cursor)) prev_cursor.value.push(metax.cursor.prev_cursor)
 }
+
+function selectedRecord(item: any){
+    emits('selected-record', item)
+}
+
 const paginationMode = async (mode: string, value: number) => {
     console.log(mode, value)
     if (mode == 'cursor' && value == 1) {
